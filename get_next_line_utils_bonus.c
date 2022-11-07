@@ -1,36 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: joao-per <joao-per@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/03 12:31:55 by joao-per          #+#    #+#             */
-/*   Updated: 2022/11/04 01:27:34 by joao-per         ###   ########.fr       */
+/*   Created: 2022/11/03 12:31:52 by joao-per          #+#    #+#             */
+/*   Updated: 2022/11/04 00:59:10 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-
-/*  ---------
-*	GET_LINE
-*	---------
-*	Extrai a linha (tanto acabando num \n e \0 como só \0 da variável estática
-*	PARAMETROS
-*	#1. O pointer para a variável estática das "runs" anteriores do get_next_line
-*	VALORES DE RETURN
-*	A string com o fim inteiro numa quebra de linha (\n + \0).
-*	--------
-*	NEW_LEFT_STR
-*	--------
-*	Guarda na variável estática, a nova variavel atualizada com 
-*	o que resta da original, menos a linha extraída.
-*	PARAMETROS
-*	#1. O pointer para a variável estática das "runs" anteriores do get_next_line
-*	RETURN VALUES
-*	A nova string atualizada com o restante da estática original menos
-*	a linha extraída
-*/
+#include "get_next_line_bonus.h"
 
 size_t	ft_strlen(char *s)
 {

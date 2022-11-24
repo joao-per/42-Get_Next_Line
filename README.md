@@ -6,6 +6,9 @@
 	<b><i>Because reading a line on a fd is way too tedious 😴.</i></b>
 </p>
 
+<div align="center">
+<img alt="GNL" src="https://github.com/joao-per/joao-per/blob/main/Badges/GetNextLine.png" />
+</div>
 
 
 ## 🗣️ About

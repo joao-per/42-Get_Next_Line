@@ -3,64 +3,79 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joao-per <joao-per@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: joao-per <joao-per@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/03 12:31:59 by joao-per          #+#    #+#             */
-/*   Updated: 2022/11/04 01:33:00 by joao-per         ###   ########.fr       */
+/*   Created: 2023/01/25 12:52:11 by joao-per          #+#    #+#             */
+/*   Updated: 2023/01/25 12:52:11 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <unistd.h>
 
-/*  -----------------
-*	READ_TO_LEFT_STR
-*	-----------------
-*	DESCRIÇÃO
-*	Pega no ficheiro aberto e guarda na variavel "buff" o que ele leu dele.
-*	Depois junta à variável estática para a persistência na informação.
-*	PARAMETROS
-*	#1. FD.
-*	#2. O pointer para a variável estática de "runs" anteriores do get_next_line
-*	VALORES DE RETURN
-*	A nova variável estática com o buffer unido para a persistência da informação
-*	ou nulo se der erro.*/
-
-char	*ft_read_to_left_str(int fd, char *left_str)
+char	*read_line(int fd, char *line)
 {
 	char	*buff;
-	int		rd_bytes;
+	int		size;
 
 	buff = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buff)
 		return (NULL);
-	rd_bytes = 1;
-	while (!ft_strchr(left_str, '\n') && rd_bytes != 0)
+	size = 1;
+	while (!ft_strchr(line, '\n') && size != 0)
 	{
-		rd_bytes = read(fd, buff, BUFFER_SIZE);
-		if (rd_bytes == -1)
+		size = read(fd, buff, BUFFER_SIZE);
+		if (size == -1)
 		{
 			free(buff);
 			return (NULL);
 		}
-		buff[rd_bytes] = '\0';
-		left_str = ft_strjoin(left_str, buff);
+		buff[size] = '\0';
+		line = ft_strjoin(line, buff);
 	}
 	free(buff);
-	return (left_str);
-}
-
-char	*get_next_line(int fd)
-{
-	char		*line;
-	static char	*left_str;
-
-	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (0);
-	left_str = ft_read_to_left_str(fd, left_str);
-	if (!left_str)
-		return (NULL);
-	line = ft_get_line(left_str);
-	left_str = ft_new_left_str(left_str);
 	return (line);
 }
+
+// the first "resto" is the full line but, when I = it to "resto_da_str",
+// it's value is going to be the rest of the string that wasn't returned.
+// FIX FOR VALGRIND after line 45 
+//	if (ft_strlen(resto) == 0)
+//        free(resto);
+char	*get_next_line(int fd)
+{
+	static char	*resto;
+	char		*line;
+
+	if (BUFFER_SIZE < 1 || fd < 0)
+		return (0);
+	resto = read_line(fd, resto);
+	if (!resto)
+		return (NULL);
+	line = ft_get_line(resto);
+	resto = resto_da_str(resto);
+	if (ft_strlen(resto) == 0)
+        free(resto);
+	return (line);
+}
+
+/* #include <unistd.h>
+#include <fcntl.h>
+int	main(void)
+{
+	char	*line;
+	int	i;
+	int	text1;
+
+	text1 = open("test/test.txt", O_RDONLY);
+	i = 1;
+
+	while(i < 4)
+	{
+		line = get_next_line(text1);
+		printf("line [%02d]: %s\n", i, line);
+		free(line);
+		i++;
+	}
+	close(text1);
+	return (0);
+} */

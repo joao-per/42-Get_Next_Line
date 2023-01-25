@@ -3,51 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joao-per <joao-per@student.42lisboa.com>   +#+  +:+       +#+        */
+/*   By: joao-per <joao-per@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/03 12:31:46 by joao-per          #+#    #+#             */
-/*   Updated: 2022/11/04 00:59:32 by joao-per         ###   ########.fr       */
+/*   Created: 2023/01/25 12:51:30 by joao-per          #+#    #+#             */
+/*   Updated: 2023/01/25 12:51:30 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 #include <unistd.h>
+#include <stdio.h>
 
-char	*ft_read_to_left_str(int fd, char *left_str)
+char	*read_line(int fd, char *line)
 {
 	char	*buff;
-	int		rd_bytes;
+	int		size;
 
 	buff = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buff)
 		return (NULL);
-	rd_bytes = 1;
-	while (!ft_strchr(left_str, '\n') && rd_bytes != 0)
+	size = 1;
+	while (!ft_strchr(line, '\n') && size != 0)
 	{
-		rd_bytes = read(fd, buff, BUFFER_SIZE);
-		if (rd_bytes == -1)
+		size = read(fd, buff, BUFFER_SIZE);
+		if (size == -1)
 		{
 			free(buff);
 			return (NULL);
 		}
-		buff[rd_bytes] = '\0';
-		left_str = ft_strjoin(left_str, buff);
+		buff[size] = '\0';
+		line = ft_strjoin(line, buff);
 	}
 	free(buff);
-	return (left_str);
+	return (line);
 }
 
+// the first "resto" is the full line but, when I = it to "resto_da_str",
+// it's value is going to be the rest of the string that wasn't returned
 char	*get_next_line(int fd)
 {
+	static char	*resto[4096];
 	char		*line;
-	static char	*left_str[4096];
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (BUFFER_SIZE < 1 || fd < 0)
 		return (0);
-	left_str[fd] = ft_read_to_left_str(fd, left_str[fd]);
-	if (!left_str[fd])
+	resto[fd] = read_line(fd, resto[fd]);
+	if (!resto[fd])
 		return (NULL);
-	line = ft_get_line(left_str[fd]);
-	left_str[fd] = ft_new_left_str(left_str[fd]);
+	line = ft_get_line(resto[fd]);
+	resto[fd] = resto_da_str(resto[fd]);
 	return (line);
 }

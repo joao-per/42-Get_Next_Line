@@ -6,7 +6,7 @@
 /*   By: joao-per <joao-per@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 13:09:34 by joao-per          #+#    #+#             */
-/*   Updated: 2022/11/03 19:05:51 by joao-per         ###   ########.fr       */
+/*   Updated: 2023/03/06 10:41:24 by joao-per         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,16 @@
 int	main(void)
 {
 	char	*line;
-	int	i;
-	int	text1;
-	int	text2;
-	int	text3;
+	int		i;
+	int		text1;
+	int		text2;
+	int		text3;
 
 	text1 = open("test/test.txt", O_RDONLY);
 	text2 = open("test/test2.txt", O_RDONLY);
 	text3 = open("test/test3.txt", O_RDONLY);
 	i = 1;
-	
-	printf("|||||||||||||||||||||\n");
-	printf("IF YOU WANT TO TEST BONUS\nDECREMENT -1 IN EACH WHILE IN ORDER TO TEST MULTIPLE FILES\nOUTPUT SHALL NOT OVERLAP DIFFERENT TEXTS.\n");
-	printf("(Press Enter to Start)\n");
-	printf("|||||||||||||||||||||\n");
-	scanf("pause");
+
 	printf("||Test Number 1: Chorus||\n");
 	while (i < 7)
 	{
@@ -64,7 +59,7 @@ int	main(void)
 		i++;
 	}
 	close(text3);
-	
+
 /* 	int text4;
 	printf("\n\n||Test Number 4: Full Song||\n");
 	text4 = open("test/test4.txt", O_RDONLY);
